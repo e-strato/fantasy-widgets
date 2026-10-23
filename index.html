@@ -1092,6 +1092,10 @@ body{ background:var(--w-page); }
 .t5-seg > button:not(.is-on), .m6-seg > button:not(.is-on){ background:none !important; box-shadow:none !important; transform:none !important; filter:none !important; }
 .t5-seg > button.is-on:hover, .t5-seg > button.is-on:active, .m6-seg > button.is-on:hover, .m6-seg > button.is-on:active{ transform:none !important; }
 .t5-seg > button, .m6-seg > button{ transition:color .25s ease !important; }
+/* Пустое состояние (дирижёр 23.10) — турнир и MVP; у замен и трансферов свои, такого же вида */
+.u-empty{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:40px 12px; text-align:center; }
+.u-empty b{ font-size:13px; font-weight:600; color:var(--w-fg); }
+.u-empty span{ font-size:12px; line-height:16px; color:var(--w-muted-fg); }
 
 </style>
 <style>
@@ -2275,6 +2279,85 @@ body.th-mecha .slot > b{ color:#6b6450; }
 
 </style>
 <style>
+/* Нет сети и ошибки (дирижёр 23.10) — поверх итоговых виджетов */
+.w{ position:relative; }
+.o-dim .w-scroll, .o-dim .m6-card{ opacity:.55; transition:opacity .3s; }
+.o-x{ font:500 12px/16px var(--w-font, 'Google Sans Flex', sans-serif); }
+.o-x svg{ flex:none; }
+/* top — плашка под шапкой */
+.o-bar{ display:flex; align-items:center; gap:6px; margin:0 0 8px; padding:6px 10px; border-radius:8px; background:rgba(245,165,36,.12); color:#f5c26b; }
+.o-bar--back{ background:rgba(74,222,128,.12); color:#86efac; }
+/* toast — плашка внизу виджета, поверх содержимого */
+.o-toast{ position:absolute; left:12px; right:12px; bottom:12px; z-index:5; display:flex; align-items:center; gap:6px; padding:8px 12px; border-radius:10px;
+  background:#27272a; color:var(--w-fg, #fafafa); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.o-toast svg{ color:#f5a524; } .o-toast--back svg{ color:#4ade80; }
+/* icon — значок в шапке справа */
+.o-ic{ display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; margin-left:6px; border-radius:6px; color:#f5a524; background:rgba(245,165,36,.12); }
+.o-ic--back{ color:#4ade80; background:rgba(74,222,128,.12); }
+/* stamp — «Обновлено в 14:32» в шапке */
+.o-stamp{ display:inline-flex; align-items:center; gap:4px; margin-left:8px; white-space:nowrap; color:var(--w-muted-fg, #a1a1aa); }
+.o-stamp svg{ color:#f5a524; } .o-stamp--back svg{ color:#4ade80; }
+/* err — данных нет */
+.o-err{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:40px 12px; text-align:center; color:var(--w-muted-fg, #a1a1aa); }
+.o-err > svg{ color:var(--w-fg, #fafafa); margin-bottom:4px; } /* значок белый (дирижёр 23.10) */ .o-err b{ font-size:13px; font-weight:600; color:var(--w-fg, #fafafa); }
+.o-btn{ flex:none; width:auto; box-sizing:border-box; display:inline-flex; align-items:center; gap:6px; margin-top:10px; height:28px; padding:0 10px; border:0; border-radius:8px;
+  background:none; color:var(--w-fg, #fafafa); font:inherit; white-space:nowrap; cursor:pointer; transition:background .15s; } /* как «Обновить» на плашке: текст, фон — при наведении, отступы ровные (дирижёр 23.10) */
+.o-btn:hover{ background:rgba(255,255,255,.08); }
+/* Шапка (v5–v8): заголовок рыжий / красный, справа значок и время */
+.o-hl{ --o-c:#fb923c; } .o-hl--red{ --o-c:#f87171; }
+.o-hl :is(.t5-ttl, .t5-hd b, .s6-hd > b, .t2-hd > b, .m6-hd > b){ color:var(--o-c) !important; transition:color .3s; }
+.o-hl--bg :is(.t5-hd, .s6-hd, .t2-hd, .m6-hd){ background:rgba(251,146,60,.12); border-radius:12px 12px 0 0; }
+.o-r{ display:inline-flex; align-items:center; gap:4px; margin-left:auto; white-space:nowrap; color:var(--o-c, #fb923c); font-variant-numeric:tabular-nums; }
+.o-r + *{ margin-left:8px !important; } .s6-sp + .o-r{ margin-left:0; }
+.o-r--back{ color:#4ade80; }
+/* Пустое — разные виды (каждый вариант — свой) */
+.o-em{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:40px 16px; text-align:center; color:var(--w-muted-fg, #a1a1aa); }
+.o-em b{ font-size:13px; font-weight:600; color:var(--w-fg, #fafafa); } .o-em span{ font-size:12px; line-height:16px; }
+.o-em--icon > svg{ margin-bottom:6px; opacity:.7; }
+.o-em--circle > i{ display:flex; align-items:center; justify-content:center; width:44px; height:44px; margin-bottom:8px; border-radius:50%; background:rgba(255,255,255,.06); color:var(--w-fg, #fafafa); }
+.o-em--ghost{ position:relative; justify-content:flex-start; gap:0; padding:8px 12px; }
+.o-em--ghost > i{ display:flex; align-items:center; gap:10px; width:100%; height:48px; opacity:.35; }
+.o-em--ghost > i u{ flex:none; width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,.1); } .o-em--ghost > i s{ flex:1; height:10px; border-radius:5px; background:rgba(255,255,255,.08); }
+.o-em--ghost > i:nth-of-type(2) s{ flex:.7 } .o-em--ghost > i:nth-of-type(3) s{ flex:.85 } .o-em--ghost > i:nth-of-type(4){ opacity:.15 }
+.o-em--ghost > p{ position:absolute; inset:0; margin:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:radial-gradient(closest-side, rgba(0,0,0,.85), transparent); }
+.o-em--game > img{ width:48px; height:48px; margin-bottom:8px; opacity:.25; filter:grayscale(1); }
+.o-em--line{ flex:none; flex-direction:row; justify-content:flex-start; gap:8px; padding:12px; text-align:left; }
+.o-em--line b{ font-size:12px; }
+.o-em--dash{ margin:8px 12px 12px; padding:32px 16px; border:1px dashed rgba(255,255,255,.14); border-radius:12px; }
+.o-lnk{ margin-top:8px; font-size:12px; color:var(--w-fg, #fafafa); text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(255,255,255,.3); }
+/* v9 — плашка из-под низа виджета, как «Взять в фэнтези» у MVP (дирижёр 23.10) */
+.w:not(.m6):has(+ .o-dock){ position:relative; z-index:1; }
+.o-dock{ position:relative; z-index:0; display:flex; align-items:center; gap:8px; width:320px; box-sizing:border-box; margin-top:-12px; padding:20px 12px 10px;
+  background:#131316; border:1px solid var(--w-border, #27272a); border-top:0; border-radius:0 0 var(--w-r, 16px) var(--w-r, 16px); color:var(--w-fg, #fafafa);
+  font:var(--t-btn, 600 13px/16px 'Google Sans Flex', sans-serif); animation:o-dock .45s cubic-bezier(.2,.8,.2,1) both; }
+.o-dock.is-still{ animation:none; }
+.slot > .w + .o-dock{ margin-top:-22px; } /* у слота gap 10 — плашка заходит под виджет на 12, как у MVP (дирижёр 23.10: «сверху гигантский отступ») */
+/* v10 — плашка красная (дирижёр 23.10) */
+.o-dock--red{ color:var(--w-down, #ef4444); } /* рамка — обычная, как у виджета (дирижёр 23.10) */
+.o-dock--red > svg{ color:var(--w-down, #ef4444); } .o-dock--red .o-dock__t{ color:var(--w-down, #ef4444); } .o-dock--red .o-dock__b{ height:28px; margin-right:-8px; padding:0 8px; border-radius:8px; background:none; color:var(--w-down, #ef4444); transition:background .15s; } /* v10: просто текст, фон — при наведении (дирижёр 23.10) */
+.o-dock--red .o-dock__b:hover{ background:rgba(239,68,68,.12); }
+.o-dock--red.o-dock--back{ background:var(--o-bg, #131316); border-color:var(--w-border, #27272a); color:var(--w-fg, #fafafa); }
+.o-dock--red.o-dock--back > svg{ color:#4ade80; } .o-dock--red.o-dock--back .o-dock__t{ color:var(--w-muted-fg, #a1a1aa); }
+@keyframes o-dock{ from{ transform:translateY(-100%); opacity:0 } }
+.o-dock > svg{ color:var(--w-down, #ef4444); } /* красный, как LIVE (дирижёр 23.10: «не рыжую, а красную») */ .o-dock--back > svg{ color:#4ade80; }
+.o-dock__t{ margin-left:auto; font:500 12px/16px var(--w-font, 'Google Sans Flex', sans-serif); color:var(--w-muted-fg, #a1a1aa); font-variant-numeric:tabular-nums; }
+.o-dock__b{ display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 10px; border:0; border-radius:999px; background:var(--w-muted, #27272a); color:var(--w-fg, #fafafa); cursor:pointer; }
+.o-em--tile{ align-items:flex-start; text-align:left; padding:24px 16px; }
+.o-em--tile > i{ display:flex; align-items:center; justify-content:center; width:36px; height:36px; margin-bottom:10px; border-radius:10px; background:rgba(255,255,255,.06); color:var(--w-fg, #fafafa); }
+/* Плашка в стилях widgets-23 — как «Взять в фэнтези» у MVP в каждом стиле; красная — поверх тонируется (дирижёр 23.10: «во всех стилистиках») */
+.o-dock--red{ background:linear-gradient(rgba(239,68,68,.05), rgba(239,68,68,.05)), var(--o-bg, #131316); }
+.th-apple{ --o-bg:var(--ios-group); } .th-skeuo{ --o-bg:linear-gradient(#26262b, #1d1d21); } .th-glow{ --o-bg:linear-gradient(180deg, #0e0e17, #0b0b12); }
+.th-terminal{ --o-bg:var(--tm-hd); } .th-nasapunk{ --o-bg:linear-gradient(180deg, #0f1114, #0d0f11); } .th-mecha{ --o-bg:rgba(8,10,12,.9); }
+.th-apple .o-dock{ height:44px; margin-top:8px; padding:0 12px 0 16px; border:0; border-radius:12px; }
+.th-apple .slot > .w + .o-dock{ margin-top:-2px; }
+.th-skeuo .o-dock{ border:1px solid #050506; border-top:0; box-shadow:inset 0 -1px 0 rgba(255,255,255,.04), 0 3px 0 #0a0a0c, 0 4px 0 #050506, 0 14px 22px -8px rgba(0,0,0,.85); text-shadow:0 1px 0 rgba(0,0,0,.7); }
+.th-glow .o-dock{ border-color:transparent; border-radius:0 0 14px 14px; }
+.th-terminal .o-dock{ border-radius:0 0 4px 4px; }
+.th-nasapunk .o-dock{ border:0; border-radius:0 0 3px 3px; box-shadow:inset 1px 0 0 var(--np-line), inset -1px 0 0 var(--np-line), inset 0 -1px 0 var(--np-line); }
+.th-mecha .o-dock{ border:0; border-radius:0; box-shadow:inset 1px 0 0 var(--mc-line), inset -1px 0 0 var(--mc-line), inset 0 -1px 0 var(--mc-line), 0 0 24px -12px rgba(255,176,0,.35); }
+.th-mecha .o-dock__b, .th-terminal .o-dock__b, .th-nasapunk .o-dock__b{ border-radius:2px !important; }
+
+</style><style>
 /* Все виджеты на одной странице: панель сверху, ниже — компьютер (скелетон 2 колонки) или телефон 390. Токены — ../widget-tournament/_w.css */
 body{ margin:0; background:var(--w-page); color:var(--w-fg); font:400 14px/20px var(--w-font); }
 .a-bar{ position:sticky; top:0; z-index:10; display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; padding:12px 24px; background:#0f0f12; border-bottom:1px solid var(--w-border); }
@@ -2359,6 +2442,10 @@ body{ margin:0; background:var(--w-page); color:var(--w-fg); font:400 14px/20px 
 .is-narrow.has-bot .a-states{ padding-bottom:140px; }
 .a-bot .a-stb{ margin-left:auto; align-self:center; } /* компьютер — справа в нижней плашке */
 .is-narrow .a-bot .a-stb{ margin-left:0; }
+.a-ss__it > span small{ display:block; color:var(--w-fg); opacity:.7; }
+/* «Ошибки»: плашка из-под низа — у пункта gap 8, заходит под виджет на 12 */
+.a-ss__it > .w + .o-dock{ margin-top:-20px; } .th-apple .a-ss__it > .w + .o-dock{ margin-top:0; }
+.a-ss__row + .a-ss__t{ margin-top:28px; } /* между «Состояния с данными» и «Пусто и ошибки» */
 
 </style></head>
 <!-- Все виджеты на одной странице для начальника (дирижёр 21.10). С 23.10 — итоговые по созвону 23.10 (widgets-23 v2: турнир v11, замены v9, трансферы v4, MVP v13),
@@ -2901,7 +2988,9 @@ window.MVP_DATA = {
       return ts.length ? `<div class="t5-lbl">${name}</div>${ts.map(([t, i]) => `<button class="t5-tr" data-tour="${i}">${when(t)}
         <span class="t5-tr__m"><span class="t5-tr__n">${game()}<b>${t.name}</b>${tier(t, 1)}</span><span class="t5-cap">${O.dt === 'status' ? t.dates.replace(' – ', '–') + ' · ' : ''}${done(t) && O.dt !== 'status' ? 'Завершён · ' : ''}${stageLine(t) || 'Призовой ' + t.prize}</span></span></button>`).join('')}` : '' }
     return `<div class="t5-hd t5-hd--list"><span class="t5-ttl">Турниры</span><button class="t5-arch">Архив ${ic.next}</button></div>
-      <div class="w-scroll"><div class="t5-bd">${g('Идут', 'live')}${g('Скоро', 'soon')}</div></div>` }
+      <div class="w-scroll"><div class="t5-bd">${s.empty ? EMPTY : g('Идут', 'live') + g('Скоро', 'soon')}</div></div>` }
+  // Пусто (дирижёр 23.10: «во всех состояниях показывать пустые»): ни идущих, ни объявленных турниров — o.empty
+  const EMPTY = '<div class="u-empty"><b>Турниров нет</b><span>Новые появятся здесь, как только их объявят</span></div>'
 
   // ——— Уровень 2: турнир ———
   const head = t => `<div class="t5-hd"><button class="t5-ib" data-back aria-label="К списку турниров">${ic.back}</button>
@@ -2973,7 +3062,7 @@ window.MVP_DATA = {
       const p = ts.find(([t]) => t.st === 'live') || ts[0]
       if (p) { s.t = p[1]; const f = findTeam(p[0], ctx.a); if (f) s.g = f.g } }
     if (o.init && o.init.tid) { s.t = D.tours.findIndex(t => t.id === o.init.tid); const f = ctx && findTeam(D.tours[s.t], ctx.a); s.g = f ? f.g : null } // экран лабы: открыть турнир по id
-    return Object.assign(s, o.init)
+    return Object.assign(s, o.init, o.empty ? { t: null, empty: true } : {})
   }
   window.T4 = { render, data: D, has, findTeam }
 })()
@@ -3076,7 +3165,7 @@ window.MVP_DATA = {
 
   // ——— Главная: только матчи с новыми расхождениями; LIVE первыми, потом прошедшие, потом предстоящие по времени ———
   const home = (el, s, redraw) => { const rank = m => m.when === 'live' ? 0 : m.done ? 1 : 2, left = m => subsOf(m).filter(x => !isDone(s, x)).length
-    const ms = D.matches.filter(m => left(m) > 0).sort((a, b) => rank(a) - rank(b) || (rank(a) ? a.when.slice(-5).localeCompare(b.when.slice(-5)) : 0))
+    const ms = D.matches.filter(m => !s.empty && left(m) > 0).sort((a, b) => rank(a) - rank(b) || (rank(a) ? a.when.slice(-5).localeCompare(b.when.slice(-5)) : 0))
     const teams = m => `<span class="s3-r__t u-fit">${vs(m)}</span>`, n = m => `<span class="u-count">${left(m)}</span>`
     // when: значок у второй строки даты — «LIVE / [ ] Map 2», «03:00 / [ ] Сегодня»
     const whenG = m => whenOf(m).replace(/<span>([^<]*)<\/span><\/span>$/, `<span class="s3-wg">${gIco(m, 's3-gi')}$1</span></span>`)
@@ -3131,7 +3220,8 @@ window.MVP_DATA = {
     wire(el, s, x, redraw, next)
   }
 
-  function render(el, o) { const s = o.s = o.s || { d: {} }, redraw = () => render(el, o)
+  // empty — нет ни одного матча с новыми расхождениями (дирижёр 23.10)
+  function render(el, o) { const s = o.s = o.s || { d: {}, empty: o.empty }, redraw = () => render(el, o)
     GP = o.game || 'row'; PH = !!o.plainHd; TINT = !!o.tint
     el.className = 'w s6 s7 s8--prow s3' + (o.big ? ' s3--big' : '') + (o.plainHd ? ' s3--phd' : '') // big (v8) — лого команд крупнее
     const x = s.w && D.subs.find(y => y.id === s.w)
@@ -3177,14 +3267,18 @@ window.MVP_DATA = {
   const gameSub = p => `<span class="tr5-wg"><img class="tr5-gi" src="${G(p).logo}" alt="">${G(p).name}</span>`
   const row = p => `<a class="t2-r tr5-r" href="${href(p)}">${GD() ? U.when({ date: dd(p.date), sub: gameSub(p) }) : U.when({ date: dd(p.date) }) + game(p)}${ph(p)}<b class="t2-nm">${p.nick}</b>
     <span class="t2-r__w tr5-w u-fit" title="${p.from || NONE} → ${p.to || NONE}">${team(p.from, 'tr5-from')}<span class="tr5-go">»</span>${team(p.to, 'tr5-to')}</span></a>`
-  const empty = m => `<div class="t2-empty"><div class="t2-empty__lg">${logo(m.a, 't2-lg t2-lg--28')}${logo(m.b, 't2-lg t2-lg--28')}</div><b>Переходов нет</b><span class="t2-cap">У команд матча новых<br>трансферов нет</span></div>`
+  // пусто: матч — лого двух команд, команда — её лого, главная — без лого (дирижёр 23.10)
+  const empty = (m, t) => m ? `<div class="t2-empty"><div class="t2-empty__lg">${logo(m.a, 't2-lg t2-lg--28')}${logo(m.b, 't2-lg t2-lg--28')}</div><b>Переходов нет</b><span class="t2-cap">У команд матча новых<br>трансферов нет</span></div>`
+    : t ? `<div class="t2-empty"><div class="t2-empty__lg">${logo(t, 't2-lg t2-lg--28')}</div><b>Переходов нет</b><span class="t2-cap">У ${t} новых<br>трансферов нет</span></div>`
+    : '<div class="t2-empty"><b>Переходов нет</b><span class="t2-cap">Новые трансферы<br>появятся здесь</span></div>'
   const chev = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
   function render(el, o) {
-    const m = o.match, ps = D.list.filter(p => !m || [m.a, m.b].some(n => n === p.from || n === p.to))
+    // команда (дирижёр 23.10): на странице команды — только её переходы; empty — пусто для «Все состояния»
+    const m = o.match, ns = m ? [m.a, m.b] : o.team ? [o.team] : null, ps = o.empty ? [] : D.list.filter(p => !ns || ns.some(n => n === p.from || n === p.to))
     el.className = 'w t2 t2--hltv t2--v5 t2--sk t2--top t2-rows--tint tr5' + (GD() ? ' tr5--gd' : '')
-    el.innerHTML = `<div class="t2-hd"><b>Трансферы</b>${m && ps.length ? '<span class="t2-cap">команды матча</span>' : ''}<a class="t2-top" href="#transfers">Смотреть все${chev}</a></div>
-      <div class="w-scroll"><div class="t2-bd">${ps.length ? `<div class="t2-th tr5-th"><span>Дата</span><span>Игрок</span><span>Трансфер</span></div>${ps.map(row).join('')}` : empty(m)}</div></div>`
+    el.innerHTML = `<div class="t2-hd"><b>Трансферы</b>${ps.length && (m || o.team) ? `<span class="t2-cap">${m ? 'команды матча' : U.tag(o.team)}</span>` : ''}<a class="t2-top" href="#transfers">Смотреть все${chev}</a></div>
+      <div class="w-scroll"><div class="t2-bd">${ps.length ? `<div class="t2-th tr5-th"><span>Дата</span><span>Игрок</span><span>Трансфер</span></div>${ps.map(row).join('')}`  : empty(m, o.team)}</div></div>`
     tint(el)
   }
   // Наведение — строка заливается цветом новой команды (как v12, ../widget-transfers-2/_tr4.js)
@@ -3244,6 +3338,11 @@ window.MVP_DATA = {
     // перерисовка по клику не сбрасывает наклон: без is-tilt слои уезжают в покой за .5 с и при переключении сегмента дёргаются (дирижёр 23.10: «мигает там, где двигается от мыши»)
     const keep = ['is-tilt', 'fx-on'].filter(c => el.classList.contains(c)), oldPh = el.querySelector('.m6-ph')
     el.className = 'w m6' + (o.depth ? ' m6--depth' : '') + (o.up ? ' m6--up' : '') + keep.map(c => ' ' + c).join('') // up (v8) — заголовок, турнир (крупнее) и сегмент тоже выше карточки // depth (v7) — ник и KDA лежат выше карточки: при наклоне сдвигаются сильнее
+    if (o.empty) { // пусто (дирижёр 23.10): MVP ещё не выбран — шапка и сегмент на месте, вместо игрока текст, кнопки нет
+      el.innerHTML = `<div class="m6-main"><div class="m6-hd"><b class="m6-up">${v.what}</b><span class="m6-ev${o.up ? ' m6-up' : ''}">${ev}</span></div>
+        <div class="m6-card u-empty"><b>MVP пока нет</b><span>${v.tab === 'Матч' ? 'Появится после матча' : 'Выберем после первых матчей'}</span></div>
+        <div class="m6-seg${o.up ? ' m6-up' : ''}">${vs.map((x, j) => `<button class="${x === v ? 'is-on' : ''}" data-j="${j}">${x.tab}</button>`).join('')}</div></div>`
+      el.querySelectorAll('[data-j]').forEach(b => b.onclick = () => { s.i = +b.dataset.j; render(el, o) }); return }
     el.innerHTML = `<div class="m6-main"><i class="m6-bg" style="--lg:url('${lg || ''}')"></i><i class="m6-gl"><i></i><i></i><i></i></i>
       <div class="m6-hd"><b class="m6-up">${v.what}</b><span class="m6-ev${o.up ? ' m6-up' : ''}">${ev}</span></div>
       <div class="m6-card"><i class="m6-floor"></i>${p.hq || p.photo ? `<img class="m6-ph" src="${p.hq ? (window.IMGR || (x => x))(p.hq) : p.photo}" alt="">` : ''}<i class="m6-fade"></i>
@@ -3275,6 +3374,78 @@ window.MVP_DATA = {
   })
 })()
 
+</script><script>window.OFF_CFG = { kind: 'dock', red: true }</script><script>
+// Нет сети и ошибки (дирижёр 23.10: «когда нет соединения — какие плашки появляются, мы это не проработали»).
+// 4 итоговых виджета (как widgets-23 v2) на главной; поверх — состояние связи. Вид плашки — window.OFF_CFG.kind (вариант лабы):
+// 'top' — плашка под шапкой · 'icon' — значок в шапке, данные чуть тусклее · 'toast' — плашка внизу виджета · 'stamp' — «обновлено N мин назад» в шапке
+// Шапка (дирижёр 23.10: «заголовок выделяется, справа иконка нет сети, лучше показывать последнее обновление»): 'hl-orange' — заголовок рыжий, справа значок и время ·
+// 'hl-red' — заголовок красный, справа «Нет сети · 14:32» · 'hl-bg' — шапка залита рыжим, справа значок и время · 'hl-ago' — заголовок рыжий, справа «3 мин назад»
+// 'dock' — плашка выезжает из-под низа виджета, как «Взять в фэнтези» у MVP (дирижёр 23.10): у MVP — вместо неё
+// Пустое — у каждого варианта своё (window.OFF_CFG.empty, дирижёр 23.10: «хочу разные пустые увидеть»): text · icon · circle · ghost · game · line · dash · notify · tile
+// Состояния (ось «Связь»): off — нет сети, данные старые · err — данных нет, не загрузилось · back — связь вернулась (на 2 с)
+(() => {
+  const K = (window.OFF_CFG || {}).kind
+  const ic = {
+    off: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M5.2 8.6a4 4 0 0 1 2.3-1.1M2.8 6.2A7.4 7.4 0 0 1 5 4.8m3-.9a7.4 7.4 0 0 1 5.2 2.3M10.6 8.4a4 4 0 0 1 .9.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="12" r="1" fill="currentColor"/></svg>',
+    ok: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="m3.5 8.5 3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    err: '<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.5M8 10.8v.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    re: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5V5h-2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' }
+  const AT = '14:32' // пример: время последних данных
+  const hdOf = w => w.querySelector('.t5-hd, .s6-hd, .t2-hd, .m6-hd'), bodyOf = w => w.querySelector('.w-scroll, .m6-card')
+  const note = st => st === 'back' ? `${ic.ok}<span>Связь есть, данные обновлены</span>` : `${ic.off}<span>Нет сети · данные на ${AT}</span>`
+  const E = (window.OFF_CFG || {}).empty || 'text'
+  // что пусто — по виджету: заголовок, подпись, значок, кнопка (для circle / notify)
+  const EM = { t5: ['Турниров нет', 'Новые появятся, как только их объявят', 'Архив турниров'], s6: ['Новых расхождений нет', 'Сверенные матчи — в архиве', 'Открыть архив'],
+    t2: ['Переходов нет', 'Новые трансферы появятся здесь', 'Все трансферы'], m6: ['MVP пока нет', 'Выберем после первых матчей', 'MVP прошлого турнира'] }
+  const EI = { t5: '<path d="M5 2.5h6v3a3 3 0 0 1-6 0v-3ZM5 3.5H3a2 2 0 0 0 2 3M11 3.5h2a2 2 0 0 1-2 3M8 8.5v3M5.5 13.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>',
+    s6: '<path d="M3 5.5h9m0 0-2.5-2.5M12 5.5 9.5 8M13 10.5H4m0 0 2.5-2.5M4 10.5 6.5 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>',
+    t2: '<circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 13.5a4.5 4.5 0 0 1 9 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>',
+    m6: '<path d="m8 2.5 1.7 3.4 3.8.6-2.7 2.6.6 3.8L8 11.1l-3.4 1.8.6-3.8-2.7-2.6 3.8-.6L8 2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>' }
+  const wid = w => ['t5', 's6', 't2', 'm6'].find(k => w.classList.contains(k)) || (w.classList.contains('t6') ? 't5' : w.classList.contains('s3') ? 's6' : 'm6')
+  const svg = (d, n) => `<svg width="${n}" height="${n}" viewBox="0 0 16 16" fill="none">${d}</svg>`
+  const emptyHtml = k => { const [t, c, b] = EM[k], i = EI[k], gl = window.MVP_DATA?.games?.find(g => g.id === 'dota2')?.logo
+    if (E === 'icon') return `<div class="o-x o-em o-em--icon">${svg(i, 24)}<b>${t}</b><span>${c}</span></div>`
+    if (E === 'circle') return `<div class="o-x o-em o-em--circle"><i>${svg(i, 20)}</i><b>${t}</b><span>${c}</span><button class="o-btn">${b}</button></div>`
+    if (E === 'ghost') return `<div class="o-x o-em o-em--ghost">${'<i><u></u><s></s></i>'.repeat(4)}<p><b>${t}</b><span>${c}</span></p></div>`
+    if (E === 'game') return `<div class="o-x o-em o-em--game">${gl ? `<img src="${gl}" alt="">` : ''}<b>${t}</b><span>${c}</span></div>`
+    if (E === 'line') return `<div class="o-x o-em o-em--line">${svg(i, 16)}<span><b>${t}</b> · ${c}</span></div>`
+    if (E === 'dash') return `<div class="o-x o-em o-em--dash"><b>${t}</b><span>${c}</span></div>`
+    if (E === 'tile') return `<div class="o-x o-em o-em--tile"><i>${svg(i, 18)}</i><b>${t}</b><span>${c}</span></div>`
+    if (E === 'notify') return `<div class="o-x o-em o-em--notify"><b>${t}</b><span>${c}</span><a href="#" class="o-lnk">Сообщить, когда появятся</a></div>`
+    return `<div class="o-x o-em"><b>${t}</b><span>${c}</span></div>` }
+  // справа в шапке — перед «Архив» / «Смотреть все», если есть
+  const right = (hd, html) => { const end = [...hd.children].reverse().find(x => x.matches('a, button.s6-arch, button.t5-arch'))
+    end ? end.insertAdjacentHTML('beforebegin', html) : hd.insertAdjacentHTML('beforeend', html) }
+  // плашка из-под низа: у MVP — внутри (наклоняется с карточкой), у остальных — следом за виджетом
+  const dockOf = w => w.classList.contains('m6') ? w.querySelector(':scope > .o-dock') : w.nextElementSibling?.classList.contains('o-dock') ? w.nextElementSibling : null
+  const RED = (window.OFF_CFG || {}).red ? ' o-dock--red' : '' // v10 — красная
+  const dockHtml = st => st === 'back' ? `<div class="o-x o-dock o-dock--back${RED}">${ic.ok}<span>Связь есть</span><span class="o-dock__t">Обновлено только что</span></div>`
+    : st === 'err' ? `<div class="o-x o-dock${RED}">${ic.off}<span>Нет сети</span><button class="o-dock__t o-dock__b">${ic.re}${RED ? 'Обновить' : 'Повторить'}</button></div>`
+    : RED ? `<div class="o-x o-dock${RED}">${ic.off}<span>Нет сети · ${AT}</span><button class="o-dock__t o-dock__b">${ic.re}Обновить</button></div>` // v10 — справа «Обновить», время — к «Нет сети» (дирижёр 23.10)
+    : `<div class="o-x o-dock${RED}">${ic.off}<span>Нет сети</span><span class="o-dock__t">Данные на ${AT}</span></div>`
+  function apply(w, st) { const od = dockOf(w), had = !!od; if (od) od.remove(); w.querySelectorAll('.o-x').forEach(x => x.remove()); w.classList.remove('o-dim', 'o-back', 'o-hl', 'o-hl--red', 'o-hl--bg')
+    const hd = hdOf(w), bd = bodyOf(w); if (bd) bd.style.display = ''; w.querySelectorAll('.m6-dock').forEach(d => d.style.display = ''); if (!st) return
+    if (st === 'empty') { if (bd) { bd.style.display = 'none'; bd.insertAdjacentHTML('afterend', emptyHtml(wid(w))) } w.querySelectorAll('.m6-dock').forEach(d => d.style.display = 'none'); return }
+    if (K === 'dock' && st !== 'empty') { const html = dockHtml(st), m6 = w.classList.contains('m6')
+      w.querySelectorAll('.m6-dock').forEach(d => d.style.display = 'none'); if (st !== 'back') w.classList.add('o-dim'); else w.classList.add('o-back')
+      m6 ? w.querySelector('.m6-main').insertAdjacentHTML('afterend', html) : w.insertAdjacentHTML('afterend', html)
+      if (had) dockOf(w)?.classList.add('is-still') // перерисовка по клику — без повторного выезда
+      if (st !== 'err') return }
+    if (K && K.startsWith('hl-') && hd && st !== 'err') { // шапка: заголовок цветом, справа значок и время последнего обновления
+      if (st === 'back') { right(hd, `<span class="o-x o-r o-r--back">${ic.ok}Только что</span>`); w.classList.add('o-back'); return }
+      w.classList.add('o-dim', 'o-hl', ...(K === 'hl-red' ? ['o-hl--red'] : K === 'hl-bg' ? ['o-hl--bg'] : []))
+      right(hd, `<span class="o-x o-r" title="Нет сети · данные на ${AT}">${ic.off}${K === 'hl-red' ? 'Нет сети · ' + AT : K === 'hl-ago' ? '3 мин назад' : AT}</span>`); return }
+    if (st === 'err') { // данных нет: вместо тела — что случилось и «Повторить»; одинаково во всех вариантах
+      if (bd) { bd.style.display = 'none'; bd.insertAdjacentHTML('afterend', `<div class="o-x o-err">${ic.err}<b>Не удалось загрузить</b><span>Нет соединения с интернетом</span><button class="o-btn">${ic.re}Повторить</button></div>`) }
+      w.querySelectorAll('.m6-dock').forEach(d => d.style.display = 'none'); return }
+    if (st === 'back') w.classList.add('o-back'); else w.classList.add('o-dim')
+    if (K === 'top' && hd) hd.insertAdjacentHTML('afterend', `<div class="o-x o-bar o-bar--${st}">${note(st)}</div>`)
+    if (K === 'toast') w.insertAdjacentHTML('beforeend', `<div class="o-x o-toast o-toast--${st}">${note(st)}</div>`)
+    if (K === 'icon' && hd) hd.insertAdjacentHTML('beforeend', `<span class="o-x o-ic o-ic--${st}" title="${st === 'back' ? 'Связь есть' : 'Нет сети · данные на ' + AT}">${st === 'back' ? ic.ok : ic.off}</span>`)
+    if (K === 'stamp' && hd) hd.insertAdjacentHTML('beforeend', `<span class="o-x o-stamp o-stamp--${st}">${st === 'back' ? ic.ok + 'Только что' : ic.off + 'Обновлено в ' + AT}</span>`) }
+  window.OFF = { apply }
+})()
+
 </script><script>
 // Все виджеты на одной странице — для начальника (дирижёр 21.10): панель сверху — вид (компьютер / телефон), экран (главная / матч / команда),
 // зритель (в фэнтези / нет) и какие виджеты показывать. Компьютер — скелетон матча как у начальника (2 колонки, справа виджеты 320),
@@ -3302,14 +3473,23 @@ window.MVP_DATA = {
     match: { name: 'Матч', t4: { match: { a: 'Power Rangers', b: 'Inner Circle x Insanity' } }, tr: { match: { a: 'Inner Circle x Insanity', b: 'Power Rangers' } }, mvp: { match: { a: 'Team Spirit', b: 'Team Liquid' } } },
     team: { name: 'Команда · Team Spirit', t4: { team: 'Team Spirit' }, tr: { team: 'Team Spirit' }, mvp: { team: 'Team Spirit' } },
   }
-  // «Все состояния» (дирижёр 23.10): у каждого виджета — его экраны подряд, не кликаются
+  const vs = m => m ? `${m.a} — ${m.b}` : ''
+  // «Все состояния» (дирижёр 23.10): у каждого виджета — его экраны подряд, не кликаются; под названием — какой матч / команда
+  const lbl = (n, o) => { const m = typeof o.match === 'string' ? (window.SUBS2 || {}).matches?.find(x => x.id === o.match) : o.match
+    return m ? `${n}<small>${vs(m)}</small>` : o.team ? `${n}<small>${o.team}</small>` : n }
+  // Ошибки (дирижёр 23.10): нет сети и не загрузилось — плашка из-под низа, красная, как widgets-offline v10
+  const NET = [['Нет сети — данные на 14:32', 'off'], ['Не загрузилось', 'err']]
   const STATES = {
     t4: [['Главная — список турниров', {}], ['Матч — группа матча', SCR.match.t4], ['Матч — две группы', { match: { a: 'Power Rangers', b: 'Inner Circle x Insanity' }, init: { g: 'B' } }],
-      ['Команда — сетка', SCR.team.t4], ['Сетка · середина плей-офф (пример)', { match: { a: 'Team Spirit', b: 'PARIVISION' }, init: { tid: 'blast-slam-8-live' } }], ['Скоро — участники', { init: { tid: 'pari-universe' } }]].map(([n, o]) => [n, el => T4.render(el, { ...o, opt: T4_OPT })]),
-    r2: [['Главная — все замены', {}], ['Матч — замены матча', { match: 'm1' }], ['Замена на карту', { match: 'm2' }], ['Шаг замены', { match: 'm1', s: { d: {}, w: 's1' } }], ['Замен нет', { match: 'm5' }]].map(([n, o]) => [n, el => S3.render(el, { ...o, ...S3_OPT })]),
-    tr: [['Главная — все переходы', {}], ['Матч — команды матча', SCR.match.tr], ['Матч — переходов нет', { match: { a: 'Team Nemesis Academy', b: 'Cloud Dawning' } }]].map(([n, o]) => [n, el => TR5.render(el, o)]),
-    mvp: [['MVP турнира', {}], ['MVP недели', { s: { i: 1 } }], ['MVP месяца', { s: { i: 2 } }], ['MVP матча', SCR.match.mvp], ['Зритель в фэнтези — игрок в составе', { mine: true }]].map(([n, o]) => [n, el => MVPC.render(el, { ...o, ...MVP_OPT })]),
+      ['Команда — сетка', SCR.team.t4], ['Сетка · середина плей-офф (пример)', { match: { a: 'Team Spirit', b: 'PARIVISION' }, init: { tid: 'blast-slam-8-live' } }], ['Скоро — участники', { init: { tid: 'pari-universe' } }], ['Главная — турниров нет', { empty: true }]].map(([n, o]) => [lbl(n, o), el => T4.render(el, { ...o, opt: T4_OPT })]),
+    r2: [['Главная — все замены', {}], ['Матч — замены матча', { match: 'm1' }], ['Замена на карту', { match: 'm2' }], ['Шаг замены', { match: 'm1', s: { d: {}, w: 's1' } }], ['Матч — замен нет', { match: 'm5' }], ['Главная — новых расхождений нет', { empty: true }]].map(([n, o]) => [lbl(n, o), el => S3.render(el, { ...o, ...S3_OPT })]),
+    tr: [['Главная — все переходы', {}], ['Матч — команды матча', SCR.match.tr], ['Команда — переходы команды', SCR.team.tr], ['Матч — переходов нет', { match: { a: 'Team Nemesis Academy', b: 'Cloud Dawning' } }], ['Команда — переходов нет', { team: 'Cloud Dawning' }], ['Главная — переходов нет', { empty: true }]].map(([n, o]) => [lbl(n, o), el => TR5.render(el, o)]),
+    mvp: [['MVP турнира', {}], ['MVP недели', { s: { i: 1 } }], ['MVP месяца', { s: { i: 2 } }], ['MVP матча', SCR.match.mvp], ['Зритель в фэнтези — игрок в составе', { mine: true }], ['MVP турнира — пока нет', { empty: true }], ['MVP матча — пока нет', { ...SCR.match.mvp, empty: true }]].map(([n, o]) => [lbl(n, o), el => MVPC.render(el, { ...o, ...MVP_OPT })]),
   }
+  STATES.t4.push(...NET.map(([n, k]) => [n, el => { T4.render(el, { opt: T4_OPT }); OFF.apply(el, k) }]))
+  STATES.r2.push(...NET.map(([n, k]) => [n, el => { S3.render(el, { ...S3_OPT }); OFF.apply(el, k) }]))
+  STATES.tr.push(...NET.map(([n, k]) => [n, el => { TR5.render(el, {}); OFF.apply(el, k) }]))
+  STATES.mvp.push(...NET.map(([n, k]) => [n, el => { MVPC.render(el, { ...MVP_OPT }); OFF.apply(el, k) }]))
   // Стиль виджетов — темы из widgets-23 (дирижёр 23.10: «чтобы можно было в разных стилях всё посмотреть»)
   const THEMES = [['', 'Базовый'], ['apple', 'Apple'], ['skeuo', 'Скевоморфизм'], ['glow', 'Подсветки'], ['terminal', 'Терминал'], ['nasapunk', 'NASA-панк'], ['mecha', 'Меха-HUD']]
   const W = [
@@ -3317,7 +3497,7 @@ window.MVP_DATA = {
     { id: 't4', name: 'Турнир', extra: [{ key: 't4scr', name: 'Экран', opts: [['home', 'На главной'], ['match', 'В матче'], ['team', 'У команды'], ['live', 'Сетка · идёт матч (пример)']] }],
       draw: (el, sc, st) => T4.render(el, st.x.t4scr === 'live' ? { match: { a: 'Team Spirit', b: 'PARIVISION' }, init: { tid: 'blast-slam-8-live' }, opt: T4_OPT } : { ...SCR[st.x.t4scr].t4, opt: T4_OPT }) },
     { id: 'r2', name: 'Замены', draw: (el, sc) => S3.render(el, { ...(sc.t4.match ? { match: 'm1' } : {}), ...S3_OPT }) },
-    { id: 'tr', name: 'Трансферы', draw: (el, sc) => TR5.render(el, sc.tr.match ? { match: sc.tr.match } : {}) },
+    { id: 'tr', name: 'Трансферы', draw: (el, sc) => TR5.render(el, sc.tr) }, // у команды — только её переходы (дирижёр 23.10)
     { id: 'mvp', name: 'MVP', extra: [{ key: 'fan', name: 'Зритель', opts: [['no', 'Не в фэнтези'], ['yes', 'В фэнтези']] }], draw: (el, sc, st) => MVPC.render(el, { ...(sc.mvp.match ? { match: sc.mvp.match } : {}), mine: st.x.fan === 'yes', ...MVP_OPT }) },
   ]
   // Настройки (дирижёр 21.10): какой виджет — все или один; где он — экран страницы. «Вид» по ширине экрана сам: компьютер — скелетон, телефон — без скелетона.
@@ -3362,7 +3542,12 @@ window.MVP_DATA = {
   // компьютер — сеткой, телефон — лентой, листается пальцем
   const drawStates = () => { const ws = W.filter(w => st.one === 'all' || st.one === w.id)
     stage.className = 'a-stage a-states'
-    stage.innerHTML = ws.map(w => `<section class="a-ss"><b class="a-ss__t">${w.name}</b><div class="a-ss__row">${STATES[w.id].map(([n], i) => `<div class="a-ss__it"><span>${n}</span><div data-st="${w.id}:${i}"></div></div>`).join('')}</div></section>`).join('')
+    // заголовки групп вместо названия виджета — он и так выбран (дирижёр 23.10): «Состояния с данными» · «Пусто и ошибки» (в названии «нет» + NET)
+    const err = n => NET.some(([x]) => x === n)
+    const em = n => /нет$/.test(n.replace(/<small>.*$/, '')) // подпись матча (<small>) не в счёт
+    const G = [['Состояния с данными', n => !err(n) && !em(n)], ['Пусто и ошибки', n => err(n) || em(n)]] // пустые и ошибки — одним рядом (дирижёр 23.10)
+    stage.innerHTML = ws.map(w => `<section class="a-ss">${G.map(([g, f]) => { const it = STATES[w.id].map((x, i) => [x[0], i]).filter(([n]) => f(n))
+      return it.length ? `<b class="a-ss__t">${g}</b><div class="a-ss__row">${it.map(([n, i]) => `<div class="a-ss__it"><span>${n}</span><div data-st="${w.id}:${i}"></div></div>`).join('')}</div>` : '' }).join('')}</section>`).join('')
     stage.querySelectorAll('[data-st]').forEach(el => { const [id, i] = el.dataset.st.split(':'); STATES[id][+i][1](el) }) }
   // Тема «Подсветки»: свет за курсором — пишет --gx / --gy (в %) на виджет, как в widgets-23 v6
   stage.addEventListener('pointermove', e => { const w = e.target.closest('.w'); if (!w) return; const b = w.getBoundingClientRect()
